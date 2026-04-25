@@ -22,19 +22,33 @@ Problem: Everything requires the internet to even load an app nowdays. Leaving d
 
 Solution: A local first app that allows most if not all of the functionality to be done straight from the users device.
 
-4. Key Features & User Stories
-   User Authentication: Users can log in via email or Google OAuth.
-   Kanban Board: Users can create, drag-and-drop, and assign tasks.
-   Real-time Notifications: Users receive push notifications for task updates.
-   User Story: "As a developer, I want to update my task status to 'Done' so that the project manager knows I have completed my work."
-   YouTube
-   YouTube
-   +4
-5. Technical Implementation & Constraints
-   Frontend: React Native (iOS & Android).
-   Backend: Node.js with PostgreSQL database.
-   Budget:
-   $
+#### Core Features
+
+1. User Authentication - Username and password, possible passkey if device allows
+   - User Story: As a user I would like to be able to keep my finances private so need a simple way to login.
+
+   - User Story: As a user the method to login must be simple to use if it takes to long or is complex I will probably not use it.
+
+   - User Story: As a user I would like to share the budget with others but still keep some transaction info private and only with those I choose to see it.
+
+2. Budget Creation - The user is able to create budget plans for their finances.
+   - User Story: As a user I would like to have my budget be easily seen and changed.
+
+   - User Story: As a user I would like assistance creating a budget with reccomendations.
+
+   - User Story: As a user I would like to make multiple budgets compare them and select one to follow with the ability to swap them easily.
+
+3. Transcation/Expense Tracking - The ability to diplay the users transaction history.
+   - User Story: As a user I want all my expenses displayed in an adjustable transaction history.
+
+   = User Story: As a user I need to be able to quickly search for a past transaction.
+   - User Story: As a user I would like the option to choose between manual and automatic expense tracking.
+
+Technical Implementation & Constraints
+Frontend: React Native (iOS & Android).
+Backend: Node.js with PostgreSQL database.
+Budget:
+$
 
 1
 5
