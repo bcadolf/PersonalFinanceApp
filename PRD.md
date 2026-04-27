@@ -44,55 +44,32 @@ Solution: A local first app that allows most if not all of the functionality to 
    = User Story: As a user I need to be able to quickly search for a past transaction.
    - User Story: As a user I would like the option to choose between manual and automatic expense tracking.
 
-Technical Implementation & Constraints
-Frontend: React Native (iOS & Android).
-Backend: Node.js with PostgreSQL database.
-Budget:
-$
+#### Tech Stack
 
-1
-5
+**FrontEnd:** Blazor-Maui Hybrid
 
-,
+**Backend:** .Net-Maui, Sqlite or PostgreSql if needed for cloud interactions. TBD
 
-0
-0
-0
-(R&D and API costs).
-Deadline: Launch by November 15, 2025.
-SafetyCulture
-SafetyCulture
-+1 6. Success Metrics (KPIs)
-Active Users:
-1
+**Cost:** MY TIME!!!
 
-,
+**Deadline:** TBD
 
-0
-0
-0
+#### Success Metrics (KPIs)
 
-- in the first month.
-  Load Time: Less than 2 seconds.
-  Bug Resolution Rate:
-  <
-  48
-  <
-  4
-  8
-  hours for critical bugs.
-  Aha! software
-  Aha! software
-  +1
-  Key Components of Development Reporting
-  Executive Summary: A concise 2-3 sentence overview.
-  Progress Tracking: Comparison of actual vs. planned milestones.
-  Risk Mitigation: Identification of technical blockers (e.g., API issues).
-  Daily/Sprint Report: Tasks completed, tasks planned for next sprint, and blockers.
-  Monday.com
-  Monday.com
-  +1
-  Common Reporting Tools
-  Aha!: Strategy roadmaps and feature tracking.
-  Monday.com: Project management and reporting dashboards.
-  Jira: Issue tracking, bug reporting, and sprint management.
+- Active Users: 1 (me)
+
+- Load Time: 30 sec boot up.
+
+- Used Weekly as intended.
+
+#### Development Reporting
+
+**Progress Tracking:** Change tracking and comparison of orignal milestones and goals and current/updated.
+
+**Sprint Report:** Tasks completed, tasks planned for next sprint, and blockers.
+
+**Reporting Tool Options:**
+
+- Trello: Kanban Board for project features and sprint tasks.
+
+- GitHub Projects: Table or Board for tracking and sprint planning/reporting.
