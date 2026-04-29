@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="PersonalFinanceApp.Data/PersonalFinanceApp.Data.csproj" />
+  <Project Path="PersonalFinanceApp.Maui/PersonalFinanceApp.Maui.csproj" />
+  <Project Path="PersonalFinanceApp.Shared/PersonalFinanceApp.Shared.csproj" />
+</Solution>
