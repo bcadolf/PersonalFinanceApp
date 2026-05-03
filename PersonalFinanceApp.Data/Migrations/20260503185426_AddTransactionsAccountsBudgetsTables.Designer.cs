@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersonalFinanceApp.Data.Data;
 
@@ -10,9 +11,11 @@ using PersonalFinanceApp.Data.Data;
 namespace PersonalFinanceApp.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260503185426_AddTransactionsAccountsBudgetsTables")]
+    partial class AddTransactionsAccountsBudgetsTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.7");
@@ -285,7 +288,7 @@ namespace PersonalFinanceApp.Data.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("Budgets");
+                    b.ToTable("Budget");
                 });
 
             modelBuilder.Entity("PersonalFinanceApp.Data.Models.BudgetItem", b =>
@@ -326,37 +329,6 @@ namespace PersonalFinanceApp.Data.Migrations
                     b.ToTable("BudgetItems");
                 });
 
-            modelBuilder.Entity("PersonalFinanceApp.Data.Models.FinanceAccount", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("AccountName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Balance")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FinanceAccountBank")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("UserProfileId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("lastUpdated")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FinanceAccounts");
-                });
-
             modelBuilder.Entity("PersonalFinanceApp.Data.Models.FinanceCategory", b =>
                 {
                     b.Property<Guid>("Id")
@@ -382,49 +354,6 @@ namespace PersonalFinanceApp.Data.Migrations
                     b.HasIndex("UserProfileId");
 
                     b.ToTable("FinanceCategories");
-                });
-
-            modelBuilder.Entity("PersonalFinanceApp.Data.Models.Transaction", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("FinanceAccountId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("FinanceCategoryId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsPending")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid>("UserProfileId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("lastUpdated")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FinanceAccountId");
-
-                    b.HasIndex("FinanceCategoryId");
-
-                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -520,25 +449,6 @@ namespace PersonalFinanceApp.Data.Migrations
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("PersonalFinanceApp.Data.Models.Transaction", b =>
-                {
-                    b.HasOne("PersonalFinanceApp.Data.Models.FinanceAccount", "FinanceAccount")
-                        .WithMany()
-                        .HasForeignKey("FinanceAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PersonalFinanceApp.Data.Models.FinanceCategory", "FinanceCategory")
-                        .WithMany()
-                        .HasForeignKey("FinanceCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FinanceAccount");
-
-                    b.Navigation("FinanceCategory");
                 });
 
             modelBuilder.Entity("PersonalFinanceApp.Data.Models.Auth.UserProfile", b =>

@@ -12,7 +12,7 @@ public class UserProfile : IdentityUser<Guid>
 
     // Finacial data lists
     public List<FinanceCategory> FinanceCategories { get; set; } = new();
-    public List<BudgetItem> BudgetItems { get; set; } = new();
+    public List<Budget> Budgets { get; set; } = new();
 
 
     // OTP or passkeys decide later to add or not. 
