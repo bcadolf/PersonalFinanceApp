@@ -9,12 +9,11 @@ namespace PersonalFinanceApp.Data.Models;
 public class FinanceCategory : BaseModel
 {
 
-    [Required]
-    [MaxLength(100)]
+    [Required(ErrorMessage = "Please enter a name for the category.")]
+    [MaxLength(100, ErrorMessage = "The category name cannot exceed 100 characters.")]
     public string CategoryName { get; set; } = string.Empty;
 
-    [ForeignKey("UserId")]
-    public Guid UserId { get; set; }
+    public Guid UserProfileId { get; set; }
 
     public List<BudgetItem> BudgetItems { get; set;} = new();
 

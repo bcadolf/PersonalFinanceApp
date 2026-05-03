@@ -1,19 +1,21 @@
 
 
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace PersonalFinanceApp.Data.Models.Auth;
 
-public class UserProfile : BaseModel
+public class UserProfile : IdentityUser<Guid>
 {
-    [Required]
-    [EmailAddress]
-    public string Email { get; set; } = string.Empty;
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; } 
 
-    [Required]
-    public string UserName { get; set; } = string.Empty;
+    // Finacial data lists
+    public List<FinanceCategory> FinanceCategories { get; set; } = new();
+    public List<BudgetItem> BudgetItems { get; set; } = new();
 
-    public string? PasswordHash { get; set; }
 
     // OTP or passkeys decide later to add or not. 
+    public List<UserPasskey> UserPasskeys { get; set; } = new();
+    
 }

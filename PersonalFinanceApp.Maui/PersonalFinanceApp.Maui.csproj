@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
-        <TargetFrameworks>net10.0-android</TargetFrameworks>
+        <TargetFrameworks>net10.0;net10.0-android</TargetFrameworks>
         <TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('linux'))">$(TargetFrameworks);net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
         <ValidateXcodeVersion>false</ValidateXcodeVersion>
         <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
@@ -50,13 +50,19 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="$(TargetFramework.Contains('-ios'))">
-    <!-- This forces the build to use your specific booted simulator -->
-    <MtouchDebug>false</MtouchDebug>
-    <RuntimeIdentifier>iossimulator-arm64</RuntimeIdentifier>
-    <ForceSimulatorId>BB4AF7D4-E4CB-407F-9C42-883C7B1834BD</ForceSimulatorId>
-    <_DeviceName>:v2:udid=BB4AF7D4-E4CB-407F-9C42-883C7B1834BD</_DeviceName>
-    <ValidateXcodeVersion>false</ValidateXcodeVersion>
-</PropertyGroup>
+        <!-- This forces the build to use your specific booted simulator -->
+        <MtouchDebug>false</MtouchDebug>
+        <RuntimeIdentifier>iossimulator-arm64</RuntimeIdentifier>
+        <ForceSimulatorId>BB4AF7D4-E4CB-407F-9C42-883C7B1834BD</ForceSimulatorId>
+        <_DeviceName>:v2:udid=BB4AF7D4-E4CB-407F-9C42-883C7B1834BD</_DeviceName>
+        <ValidateXcodeVersion>false</ValidateXcodeVersion>
+    </PropertyGroup>
+
+
+    <PropertyGroup Condition="'$(TargetFramework)' == 'net10.0'">
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+
 
 
     <ItemGroup>
@@ -78,6 +84,10 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.7">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
