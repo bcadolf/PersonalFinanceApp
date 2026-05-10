@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PersonalFinanceApp.Data.Data;
@@ -11,11 +12,21 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
+		
 		var builder = MauiApp.CreateBuilder();
+
+		SQLitePCL.Batteries_V2.Init();
 
 		string dbPath = Path.Combine(FileSystem.AppDataDirectory, "personalfinanceapp.db");
 
-		builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite($"Filename={dbPath}"));
+		Debug.WriteLine(dbPath);
+
+		var dbKey = DatabaseSecurity.GetKeySync(dbPath);
+
+		Debug.WriteLine(dbKey);
+
+		builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite($"Data Source={dbPath};Password={dbKey}"));
+		
 
 		builder.Services.AddIdentityCore<UserProfile>()
 			.AddRoles<IdentityRole<Guid>>()

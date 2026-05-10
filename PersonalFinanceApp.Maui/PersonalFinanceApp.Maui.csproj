@@ -63,6 +63,12 @@
         <OutputType>Library</OutputType>
     </PropertyGroup>
 
+    <PropertyGroup Condition="$(TargetFramework.Contains('-maccatalyst'))">
+        <!-- Forces ad-hoc signing so entitlements are accepted locally -->
+        <CodesignKey>-</CodesignKey>
+        <CodesignProvision>-</CodesignProvision>
+        <UseHardenedRuntime>false</UseHardenedRuntime>
+    </PropertyGroup>
 
 
     <ItemGroup>
@@ -91,6 +97,7 @@
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
+        <PackageReference Include="SQLitePCLRaw.bundle_e_sqlcipher" Version="2.1.11" />
     </ItemGroup>
 
     <ItemGroup>
