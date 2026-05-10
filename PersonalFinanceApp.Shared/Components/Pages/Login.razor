@@ -1,0 +1,69 @@
+@page "/login"
+@using PersonalFinanceApp.Data.Models
+@using PersonalFinanceApp.Data.Services
+@using PersonalFinanceApp.Shared.Components.Shared.Login
+@using System.Diagnostics
+@layout EmptyLayout
+@inject LoginService LoginService
+@inject NavigationManager NavManager
+
+<h1>Welcome to your Personal Finance App</h1>
+
+@if (Stage == LoginStage.EnterUsername) {
+    <UsernameEntry OnUsernameSubmit="HandleUsernameSubmit" />
+}
+else if (Stage == LoginStage.Signup) {
+    <SignupForm Username="@Username" OnSignupSubmit="HandleSignupSubmit" />
+}
+else if (Stage == LoginStage.EnterPassword) {
+    <PasswordEntry Username="@Username" OnPasswordSubmit="HandleLoginSubmit" PassFail="@PassFail"/>
+}
+
+
+
+@code {
+    private enum LoginStage {
+        EnterUsername,
+        Signup,
+        EnterPassword
+        }
+
+        private LoginStage Stage { get; set; } = LoginStage.EnterUsername;
+        private string Username { get; set; } = string.Empty;
+        private string Password { get; set; } = string.Empty;
+        private string FirstName { get; set; } = string.Empty;
+        private string LastName { get; set; } = string.Empty;
+        private string Email { get; set; } = string.Empty;
+        private string PassFail { get; set; } = "display: none";
+
+        private async Task HandleUsernameSubmit(string username) {
+            Username = username;
+
+            bool foundUser = await LoginService.UsernameFound(Username);
+            Stage = foundUser ? LoginStage.EnterPassword : LoginStage.Signup;
+        }
+
+        private async Task HandleSignupSubmit(SignupModel data) {
+            
+            await LoginService.CreateUser(data.Username,
+            data.Password,
+            data.FirstName,
+            data.LastName,
+            data.Email);
+            Stage = LoginStage.EnterPassword;
+            StateHasChanged();
+        }
+
+        private async Task HandleLoginSubmit(string password) {
+            Password = password;
+
+            bool valid = await LoginService.ValidatePassword(Username, Password);
+
+        if (valid) {
+            NavManager.NavigateTo("/dashboard");
+        } else {
+            PassFail = "display: block; color: red;";
+            StateHasChanged();
+        }
+        }
+}

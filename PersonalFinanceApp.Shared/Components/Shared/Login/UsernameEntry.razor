@@ -1,0 +1,16 @@
+
+
+<EditForm model="this" OnValidSubmit="HandleSubmit">
+    <InputText @bind-Value="Username" placeholder="Enter username"></InputText>
+    <button type=submit disabled=@(string.IsNullOrEmpty(Username))>Next</button>
+</EditForm>
+
+@code {
+    [Parameter] public EventCallback<string> OnUsernameSubmit { get; set; }
+
+    public string Username { get; set; } = string.Empty;
+
+    private async Task HandleSubmit() {
+        await OnUsernameSubmit.InvokeAsync(Username);
+    }
+}

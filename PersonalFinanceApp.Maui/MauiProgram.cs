@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PersonalFinanceApp.Data.Data;
 using PersonalFinanceApp.Data.Models.Auth;
+using PersonalFinanceApp.Data.Services;
 
 namespace PersonalFinanceApp.Maui;
 
@@ -19,6 +20,7 @@ public static class MauiProgram
 		builder.Services.AddIdentityCore<UserProfile>()
 			.AddRoles<IdentityRole<Guid>>()
 			.AddEntityFrameworkStores<AppDbContext>();
+		builder.Services.AddScoped<LoginService>();
 		builder
 			.UseMauiApp<App>()
 			.ConfigureFonts(fonts =>
