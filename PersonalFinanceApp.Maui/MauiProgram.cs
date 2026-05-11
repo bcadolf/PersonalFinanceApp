@@ -22,8 +22,6 @@ public static class MauiProgram
 		var dbKey = DatabaseSecurity.GetKeySync();
 
 		builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite($"Data Source={dbPath};Password={dbKey}"));
-
-		Debug.WriteLine(dbKey + dbPath);
 		
 
 		builder.Services.AddIdentityCore<UserProfile>()

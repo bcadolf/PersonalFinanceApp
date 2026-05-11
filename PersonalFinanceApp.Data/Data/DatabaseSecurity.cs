@@ -25,7 +25,6 @@ public static class DatabaseSecurity
 
         if (!string.IsNullOrEmpty(key))
         {
-            Debug.WriteLine("found key");
             return key;
         }
 
