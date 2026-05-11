@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <EnableDefaultCssItems>true</EnableDefaultCssItems>
     <GenerateScopedCssFiles>true</GenerateScopedCssFiles>
+    <StaticWebAssetsEnabled>true</StaticWebAssetsEnabled>
   </PropertyGroup>
 
 

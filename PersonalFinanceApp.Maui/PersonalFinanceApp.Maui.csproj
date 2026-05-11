@@ -21,6 +21,7 @@
         <EnableDefaultCssItems>true</EnableDefaultCssItems>
         <GenerateScopedCssFiles>true</GenerateScopedCssFiles>
         <Nullable>enable</Nullable>
+        <StaticWebAssetsEnabled>true</StaticWebAssetsEnabled>
 
         <!-- Enable XAML source generation for faster build times and improved performance.
              This generates C# code from XAML at compile time instead of runtime inflation.
