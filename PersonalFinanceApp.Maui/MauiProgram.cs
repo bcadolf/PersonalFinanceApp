@@ -19,13 +19,11 @@ public static class MauiProgram
 
 		string dbPath = Path.Combine(FileSystem.AppDataDirectory, "personalfinanceapp.db");
 
-		Debug.WriteLine(dbPath);
-
-		var dbKey = DatabaseSecurity.GetKeySync(dbPath);
-
-		Debug.WriteLine(dbKey);
+		var dbKey = DatabaseSecurity.GetKeySync();
 
 		builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite($"Data Source={dbPath};Password={dbKey}"));
+
+		Debug.WriteLine(dbKey + dbPath);
 		
 
 		builder.Services.AddIdentityCore<UserProfile>()
