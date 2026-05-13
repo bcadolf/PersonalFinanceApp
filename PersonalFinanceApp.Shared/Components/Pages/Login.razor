@@ -7,9 +7,11 @@
 @inject LoginService LoginService
 @inject NavigationManager NavManager
 
-<h1>Welcome to your Personal Finance App</h1>
+<h1>Welcome to your Personal Finance Manager</h1>
 
+<div class="content">
 @if (Stage == LoginStage.EnterUsername) {
+    <p>Please enter a username to login or signup.</p>
     <UsernameEntry OnUsernameSubmit="HandleUsernameSubmit" />
 }
 else if (Stage == LoginStage.Signup) {
@@ -18,7 +20,7 @@ else if (Stage == LoginStage.Signup) {
 else if (Stage == LoginStage.EnterPassword) {
     <PasswordEntry Username="@Username" OnPasswordSubmit="HandleLoginSubmit" PassFail="@PassFail"/>
 }
-
+</div>
 
 
 @code {

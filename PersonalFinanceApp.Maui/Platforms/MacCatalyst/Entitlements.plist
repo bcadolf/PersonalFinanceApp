@@ -6,14 +6,14 @@
         <!-- App Sandbox must be enabled to distribute a MacCatalyst app through the Mac App Store. -->
         <key>com.apple.security.app-sandbox</key>
         <true/>
-        <!-- This allows the app to store the database key in the Mac 
-        <key>keychain-access-groups</key>
-        <array>
-            <string>$(AppIdentifierPrefix)$(CFBundleIdentifier)</string>
-        </array> -->
         <!-- When App Sandbox is enabled, this value is required to open outgoing network connections. -->
         <key>com.apple.security.network.client</key>
         <true/>
+        <!-- This allows the app to store the database key in the Mac  -->
+        <key>keychain-access-groups</key>
+        <array>
+            <string>$(AppIdentifierPrefix)$(CFBundleIdentifier)</string>
+        </array>
     </dict>
 </plist>
 

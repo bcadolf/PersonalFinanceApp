@@ -65,6 +65,12 @@
         <OutputType>Library</OutputType>
     </PropertyGroup>
 
+    <PropertyGroup Condition="$(TargetFramework.Contains('-maccatalyst')) and '$(Configuration)' == 'Debug'">
+        <ApplicationId>com-company-personalfinanceapp-maui</ApplicationId>
+        <CodesignEntitlements>Platforms/MacCatalyst/Entitlements.plist</CodesignEntitlements>
+        <UseCodeSigning>true</UseCodeSigning>
+    </PropertyGroup>
+
 
     <ItemGroup>
         <!-- App Icon -->

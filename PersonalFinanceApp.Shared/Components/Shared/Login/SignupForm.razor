@@ -3,7 +3,7 @@
 @inject LoginService LoginService
 
 
-<EditForm Model="model" OnValidSubmit="HandleSubmit">
+<EditForm Model="model" OnValidSubmit="HandleSubmit" class="site-forms">
     <p>Welcome '@Username' to the app, please fill out the information below to create your new account.</p>
 
     <InputText  type="password" @bind-Value="model.Password" placeholder="Enter a Password" />
