@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -36,6 +37,10 @@ public static class MauiProgram
 			});
 
 		builder.Services.AddMauiBlazorWebView();
+		// Auth services
+		builder.Services.AddAuthorizationCore();
+		builder.Services.AddScoped<UserAuthState>();
+		builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<UserAuthState>());
 
 #if DEBUG
 		builder.Services.AddBlazorWebViewDeveloperTools();

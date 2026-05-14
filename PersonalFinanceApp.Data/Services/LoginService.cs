@@ -1,9 +1,7 @@
 
 
-using System.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using PersonalFinanceApp.Data.Data;
 using PersonalFinanceApp.Data.Models.Auth;
 
@@ -41,17 +39,23 @@ public class LoginService
         await _db.SaveChangesAsync();
     }
 
-    public async Task<bool> ValidatePassword(string username, string password)
+    public async Task<string> ValidatePassword(string username, string password)
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.UserName == username);
+        string userId = string.Empty;
 
         if (user == null || string.IsNullOrEmpty(user.PasswordHash))
         {
-            return false;
+            return "false";
         }
 
         var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
 
-        return result == PasswordVerificationResult.Success;
+        if (result == PasswordVerificationResult.Success)
+        {
+            userId = user.Id.ToString();
+        }
+        
+        return userId;
     }
 }
