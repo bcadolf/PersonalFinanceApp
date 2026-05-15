@@ -1,9 +1,7 @@
 @page "/login"
-@using Microsoft.Maui.Storage
 @using PersonalFinanceApp.Data.Models
 @using PersonalFinanceApp.Data.Services
 @using PersonalFinanceApp.Shared.Components.Shared.Login
-@using System.Diagnostics
 @layout EmptyLayout
 @attribute [AllowAnonymous]
 @inject LoginService LoginService
@@ -36,9 +34,6 @@ else if (Stage == LoginStage.EnterPassword) {
         private LoginStage Stage { get; set; } = LoginStage.EnterUsername;
         private string Username { get; set; } = string.Empty;
         private string Password { get; set; } = string.Empty;
-        private string FirstName { get; set; } = string.Empty;
-        private string LastName { get; set; } = string.Empty;
-        private string Email { get; set; } = string.Empty;
         private string PassFail { get; set; } = "display: none";
 
         private async Task HandleUsernameSubmit(string username) {
@@ -61,23 +56,16 @@ else if (Stage == LoginStage.EnterPassword) {
         }
 
         private async Task HandleLoginSubmit(string password) {
-        Password = password;
+            Password = password;
 
-        try {
             string userId = await LoginService.ValidatePassword(Username, Password);
+
             if (string.IsNullOrEmpty(userId)) {
                 PassFail = "display: block; color: red;";
                 StateHasChanged();
-                return;
+            } else {
+                await UserAuth.Login(userId, Username);
+                NavManager.NavigateTo("/dashboard");
             }
-
-            await UserAuth.Login(userId, Username);
-            NavManager.NavigateTo("/dashboard");
         }
-        catch (Exception ex) {
-            Debug.WriteLine($"Login error: {ex}");
-            PassFail = "display: block; color: red;";
-            StateHasChanged();
-        }
-    }
 }

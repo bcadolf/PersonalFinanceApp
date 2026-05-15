@@ -35,12 +35,14 @@ public static class MauiProgram
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 			});
+		builder.Services.AddScoped<UserInfoService>();
 
 		builder.Services.AddMauiBlazorWebView();
 		// Auth services
 		builder.Services.AddAuthorizationCore();
 		builder.Services.AddScoped<UserAuthState>();
 		builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<UserAuthState>());
+		
 
 #if DEBUG
 		builder.Services.AddBlazorWebViewDeveloperTools();
