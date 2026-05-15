@@ -4,12 +4,16 @@
 @using PersonalFinanceApp.Shared.Components.Shared.Login
 @using System.Diagnostics
 @layout EmptyLayout
+@attribute [AllowAnonymous]
 @inject LoginService LoginService
 @inject NavigationManager NavManager
+@inject UserAuthState UserAuth
 
-<h1>Welcome to your Personal Finance App</h1>
+<h1>Welcome to your Personal Finance Manager</h1>
 
+<div class="content">
 @if (Stage == LoginStage.EnterUsername) {
+    <p>Please enter a username to login or signup.</p>
     <UsernameEntry OnUsernameSubmit="HandleUsernameSubmit" />
 }
 else if (Stage == LoginStage.Signup) {
@@ -18,7 +22,7 @@ else if (Stage == LoginStage.Signup) {
 else if (Stage == LoginStage.EnterPassword) {
     <PasswordEntry Username="@Username" OnPasswordSubmit="HandleLoginSubmit" PassFail="@PassFail"/>
 }
-
+</div>
 
 
 @code {
@@ -57,13 +61,14 @@ else if (Stage == LoginStage.EnterPassword) {
         private async Task HandleLoginSubmit(string password) {
             Password = password;
 
-            bool valid = await LoginService.ValidatePassword(Username, Password);
+            string userId = await LoginService.ValidatePassword(Username, Password);
 
-        if (valid) {
-            NavManager.NavigateTo("/dashboard");
-        } else {
-            PassFail = "display: block; color: red;";
-            StateHasChanged();
-        }
+            if (userId == "false") {
+                PassFail = "display: block; color: red;";
+                StateHasChanged();
+            } else {
+                await UserAuth.Login(userId, Username);
+                NavManager.NavigateTo("/dashboard");
+            }
         }
 }

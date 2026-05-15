@@ -1,0 +1,34 @@
+﻿@page "/dashboard"
+@using Microsoft.Maui.Storage
+@using PersonalFinanceApp.Data.Services
+@using System.Diagnostics
+
+@inject UserAuthState UserAuth
+
+<h1>Hello, @FirstName @LastName!</h1>
+
+Welcome to your new app.
+
+        <p>Current session managed for User ID: @userId</p>
+
+        <button @onclick="LogoutButton">Logout</button>
+
+
+        
+
+
+@code {
+    private string FirstName { get; set; } = string.Empty;
+    private string LastName { get; set; } = string.Empty;
+    string? userId {get; set;} = string.Empty;
+
+    protected override async Task OnInitializedAsync() {
+        userId = await SecureStorage.Default.GetAsync("user_id");
+    }
+
+    private async void LogoutButton() {
+        await UserAuth.Logout();
+    }
+    
+    
+}

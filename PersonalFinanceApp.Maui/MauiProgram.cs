@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PersonalFinanceApp.Data.Data;
@@ -11,11 +13,17 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
+		
 		var builder = MauiApp.CreateBuilder();
+
+		SQLitePCL.Batteries_V2.Init();
 
 		string dbPath = Path.Combine(FileSystem.AppDataDirectory, "personalfinanceapp.db");
 
-		builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite($"Filename={dbPath}"));
+		var dbKey = DatabaseSecurity.GetKeySync();
+
+		builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite($"Data Source={dbPath};Password={dbKey}"));
+		
 
 		builder.Services.AddIdentityCore<UserProfile>()
 			.AddRoles<IdentityRole<Guid>>()
@@ -29,6 +37,10 @@ public static class MauiProgram
 			});
 
 		builder.Services.AddMauiBlazorWebView();
+		// Auth services
+		builder.Services.AddAuthorizationCore();
+		builder.Services.AddScoped<UserAuthState>();
+		builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<UserAuthState>());
 
 #if DEBUG
 		builder.Services.AddBlazorWebViewDeveloperTools();

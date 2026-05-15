@@ -1,6 +1,6 @@
 
 
-<EditForm model="this" OnValidSubmit="HandleSubmit">
+<EditForm model="this" OnValidSubmit="HandleSubmit" class="site-forms">
     <InputText @bind-Value="Username" placeholder="Enter username"></InputText>
     <button type=submit disabled=@(string.IsNullOrEmpty(Username))>Next</button>
 </EditForm>
