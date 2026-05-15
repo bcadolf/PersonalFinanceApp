@@ -1,4 +1,5 @@
 @page "/login"
+@using Microsoft.Maui.Storage
 @using PersonalFinanceApp.Data.Models
 @using PersonalFinanceApp.Data.Services
 @using PersonalFinanceApp.Shared.Components.Shared.Login
@@ -54,21 +55,29 @@ else if (Stage == LoginStage.EnterPassword) {
             data.FirstName,
             data.LastName,
             data.Email);
+            Username = data.Username;
             Stage = LoginStage.EnterPassword;
             StateHasChanged();
         }
 
         private async Task HandleLoginSubmit(string password) {
-            Password = password;
+        Password = password;
 
+        try {
             string userId = await LoginService.ValidatePassword(Username, Password);
-
-            if (userId == "false") {
+            if (string.IsNullOrEmpty(userId)) {
                 PassFail = "display: block; color: red;";
                 StateHasChanged();
-            } else {
-                await UserAuth.Login(userId, Username);
-                NavManager.NavigateTo("/dashboard");
+                return;
             }
+
+            await UserAuth.Login(userId, Username);
+            NavManager.NavigateTo("/dashboard");
         }
+        catch (Exception ex) {
+            Debug.WriteLine($"Login error: {ex}");
+            PassFail = "display: block; color: red;";
+            StateHasChanged();
+        }
+    }
 }

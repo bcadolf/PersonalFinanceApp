@@ -46,16 +46,25 @@ public class LoginService
 
         if (user == null || string.IsNullOrEmpty(user.PasswordHash))
         {
-            return "false";
+            return string.Empty;
         }
 
         var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
 
         if (result == PasswordVerificationResult.Success)
         {
-            userId = user.Id.ToString();
+            return userId = user.Id.ToString();
+        }
+
+        if (result == PasswordVerificationResult.SuccessRehashNeeded)
+        {
+            user.PasswordHash = _passwordHasher.HashPassword(user, password);
+
+            await _db.SaveChangesAsync();
+
+            return user.Id.ToString();
         }
         
-        return userId;
+        return string.Empty;
     }
 }

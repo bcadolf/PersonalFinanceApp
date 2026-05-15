@@ -1,32 +1,46 @@
 ﻿@page "/dashboard"
-@using Microsoft.Maui.Storage
+
 @using PersonalFinanceApp.Data.Services
-@using System.Diagnostics
+
 
 @inject UserAuthState UserAuth
+@inject UserInfoService UserInfoService
+@inject NavigationManager NavManager
 
-<h1>Hello, @FirstName @LastName!</h1>
 
-Welcome to your new app.
+@if (userInfo == null){
+    <p><em>Loading your profile...</em></p>
+}
+else {
+    // page loads after db call
+    <h1>Hello, @userInfo.FirstName @userInfo.LastName!</h1>
+    <p>Welcome to your new app.</p>
+    <p>Current session managed for User ID: @UserAuth.CurrentUserId</p>
 
-        <p>Current session managed for User ID: @userId</p>
+    <button @onclick="LogoutButton">Logout</button>
+}
 
-        <button @onclick="LogoutButton">Logout</button>
 
 
         
 
 
 @code {
-    private string FirstName { get; set; } = string.Empty;
-    private string LastName { get; set; } = string.Empty;
-    string? userId {get; set;} = string.Empty;
+    
+    private UserResult? userInfo;
 
-    protected override async Task OnInitializedAsync() {
-        userId = await SecureStorage.Default.GetAsync("user_id");
+    protected override async Task OnInitializedAsync()
+    {
+        // get the basic user info
+        if (UserAuth.CurrentUserGuid == Guid.Empty) {
+            NavManager.NavigateTo("/login");
+            return;
+        }
+        userInfo = await UserInfoService.GetUserById(UserAuth.CurrentUserGuid);
     }
+    
 
-    private async void LogoutButton() {
+    private async Task LogoutButton() {
         await UserAuth.Logout();
     }
     
