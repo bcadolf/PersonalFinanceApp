@@ -1,6 +1,4 @@
 
-
-using System.Diagnostics;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Maui.Storage;
@@ -42,7 +40,8 @@ public class UserAuthState : AuthenticationStateProvider
                 new Claim(ClaimTypes.Name, username)
             }, "CustomAuth");
 
-            return new AuthenticationState(new ClaimsPrincipal(identity));
+            _currentUser = new ClaimsPrincipal(identity);
+            return new AuthenticationState(_currentUser);
         } catch
         {
             _currentUser = _anonymous;

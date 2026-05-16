@@ -2,70 +2,103 @@
 @using PersonalFinanceApp.Data.Models
 @using PersonalFinanceApp.Data.Services
 @using PersonalFinanceApp.Shared.Components.Shared.Login
+@using Microsoft.AspNetCore.Components.Authorization
 @layout EmptyLayout
 @attribute [AllowAnonymous]
-@inject LoginService LoginService
+@inject ILoginService LoginService
 @inject NavigationManager NavManager
 @inject UserAuthState UserAuth
+
+
 
 <h1>Welcome to your Personal Finance Manager</h1>
 
 <div class="content">
-@if (Stage == LoginStage.EnterUsername) {
-    <p>Please enter a username to login or signup.</p>
-    <UsernameEntry OnUsernameSubmit="HandleUsernameSubmit" />
-}
-else if (Stage == LoginStage.Signup) {
-    <SignupForm Username="@Username" OnSignupSubmit="HandleSignupSubmit" />
-}
-else if (Stage == LoginStage.EnterPassword) {
-    <PasswordEntry Username="@Username" OnPasswordSubmit="HandleLoginSubmit" PassFail="@PassFail"/>
-}
+    @if (isLoading) {
+        <p><em>Checking Session...</em></p>
+    }
+    else 
+    {
+        @if (Stage == LoginStage.EnterUsername) {
+            <p>Please enter a username to login or signup.</p>
+            <UsernameEntry OnUsernameSubmit="HandleUsernameSubmit" />
+        }
+        else if (Stage == LoginStage.Signup) {
+            <SignupForm Username="@Username" OnSignupSubmit="HandleSignupSubmit" />
+        }
+        else if (Stage == LoginStage.EnterPassword) {
+            <PasswordEntry Username="@Username" OnPasswordSubmit="HandleLoginSubmit" PassFail="@PassFail"/>
+        }
+    }
 </div>
 
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState>? AuthStateCheck { get; set; }
     private enum LoginStage {
         EnterUsername,
         Signup,
         EnterPassword
-        }
+    }
+    private bool isLoading = true;
 
-        private LoginStage Stage { get; set; } = LoginStage.EnterUsername;
-        private string Username { get; set; } = string.Empty;
-        private string Password { get; set; } = string.Empty;
-        private string PassFail { get; set; } = "display: none";
+    private LoginStage Stage { get; set; } = LoginStage.EnterUsername;
+    private string Username { get; set; } = string.Empty;
+    private string Password { get; set; } = string.Empty;
+    private string PassFail { get; set; } = "display: none";
+    
 
-        private async Task HandleUsernameSubmit(string username) {
-            Username = username;
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        
+        if (!firstRender) {
+            return;
+        } 
+        // avoids screen flicker on fast verification 
+        await Task.Delay(3000);
+        // added to allow user login state to function so if user does not logout the app will open
+        if (AuthStateCheck != null) {
+            var authState = await AuthStateCheck;
+            var user = authState.User;
 
-            bool foundUser = await LoginService.UsernameFound(Username);
-            Stage = foundUser ? LoginStage.EnterPassword : LoginStage.Signup;
-        }
-
-        private async Task HandleSignupSubmit(SignupModel data) {
-            
-            await LoginService.CreateUser(data.Username,
-            data.Password,
-            data.FirstName,
-            data.LastName,
-            data.Email);
-            Username = data.Username;
-            Stage = LoginStage.EnterPassword;
-            StateHasChanged();
-        }
-
-        private async Task HandleLoginSubmit(string password) {
-            Password = password;
-
-            string userId = await LoginService.ValidatePassword(Username, Password);
-
-            if (string.IsNullOrEmpty(userId)) {
-                PassFail = "display: block; color: red;";
-                StateHasChanged();
-            } else {
-                await UserAuth.Login(userId, Username);
-                NavManager.NavigateTo("/dashboard");
+            if (user.Identity is not null && user.Identity.IsAuthenticated) {
+                NavManager.NavigateTo("/dashboard", replace: true);
+                return;
             }
         }
+        isLoading = false;
+        StateHasChanged();
+    }
+    private async Task HandleUsernameSubmit(string username) {
+        Username = username;
+
+        bool foundUser = await LoginService.UsernameFound(Username);
+        Stage = foundUser ? LoginStage.EnterPassword : LoginStage.Signup;
+    }
+
+    private async Task HandleSignupSubmit(SignupModel data) {
+        
+        await LoginService.CreateUser(data.Username,
+        data.Password,
+        data.FirstName,
+        data.LastName,
+        data.Email);
+        Username = data.Username;
+        Stage = LoginStage.EnterPassword;
+        StateHasChanged();
+    }
+
+    private async Task HandleLoginSubmit(string password) {
+        Password = password;
+
+        string userId = await LoginService.ValidatePassword(Username, Password);
+
+        if (string.IsNullOrEmpty(userId)) {
+            PassFail = "display: block; color: red;";
+            StateHasChanged();
+        } else {
+            await UserAuth.Login(userId, Username);
+            NavManager.NavigateTo("/dashboard");
+        }
+    }
 }

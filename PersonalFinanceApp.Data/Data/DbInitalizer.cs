@@ -112,6 +112,7 @@ public static class DbInitializer
                     Amount = 200.00m,
                     FinanceCategoryId = financeCategoryIds.First(fc => fc.CategoryName == "Groceries").Id,
                     UserProfileId = userProfileId,
+                    BudgetId = budgetId,
                     lastUpdated = DateTime.UtcNow,
                     isDeleted = false
                 },
@@ -122,6 +123,7 @@ public static class DbInitializer
                     Amount = 150.00m,
                     FinanceCategoryId = financeCategoryIds.First(fc => fc.CategoryName == "Transportation").Id,
                     UserProfileId = userProfileId,
+                    BudgetId = budgetId,
                     lastUpdated = DateTime.UtcNow,
                     isDeleted = false
                 },
@@ -132,6 +134,7 @@ public static class DbInitializer
                     Amount = 50.00m,
                     FinanceCategoryId = financeCategoryIds.First(fc => fc.CategoryName == "Entertainment").Id,
                     UserProfileId = userProfileId,
+                    BudgetId = budgetId,
                     lastUpdated = DateTime.UtcNow,
                     isDeleted = false
                 }

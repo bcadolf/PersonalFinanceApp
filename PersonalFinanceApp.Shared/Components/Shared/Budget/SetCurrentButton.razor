@@ -1,0 +1,27 @@
+
+
+<div>
+    <p>@CurrentStatus()</p>
+    <button @onclick="handleClick" hidden=@(isCurrent) >
+    Change To Current
+</button>
+</div>
+
+
+@code {
+    [Parameter]
+    public bool isCurrent { get; set; }
+    [Parameter]
+    public EventCallback SetCurrentChange { get; set; }
+
+    private string CurrentStatus() {
+        if (isCurrent) {
+            return "Current Active Budget";
+        }
+        return "Not Current Active Budget";
+    }
+
+    private void handleClick() {
+        SetCurrentChange.InvokeAsync(isCurrent);
+    }
+}

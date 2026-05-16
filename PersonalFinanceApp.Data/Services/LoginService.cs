@@ -7,7 +7,7 @@ using PersonalFinanceApp.Data.Models.Auth;
 
 namespace PersonalFinanceApp.Data.Services;
 
-public class LoginService
+public class LoginService : ILoginService
 {
     private readonly AppDbContext _db;
 

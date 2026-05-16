@@ -21,21 +21,22 @@ public static class MauiProgram
 		string dbPath = Path.Combine(FileSystem.AppDataDirectory, "personalfinanceapp.db");
 
 		var dbKey = DatabaseSecurity.GetKeySync();
-
+		// db services
 		builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite($"Data Source={dbPath};Password={dbKey}"));
-		
-
 		builder.Services.AddIdentityCore<UserProfile>()
 			.AddRoles<IdentityRole<Guid>>()
 			.AddEntityFrameworkStores<AppDbContext>();
-		builder.Services.AddScoped<LoginService>();
+		// db read write update etc services and interfaces
+		builder.Services.AddScoped<ILoginService, LoginService>();
+		builder.Services.AddScoped<IUserInfoService, UserInfoService>();
+		builder.Services.AddScoped<IBudgetService, BudgetService>();
+
 		builder
 			.UseMauiApp<App>()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 			});
-		builder.Services.AddScoped<UserInfoService>();
 
 		builder.Services.AddMauiBlazorWebView();
 		// Auth services

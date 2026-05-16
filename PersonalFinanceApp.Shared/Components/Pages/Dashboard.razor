@@ -1,11 +1,15 @@
 ﻿@page "/dashboard"
 
 @using PersonalFinanceApp.Data.Services
+@using PersonalFinanceApp.Data.Models
+@using PersonalFinanceApp.Shared.Components.Shared.Budget
 
 
 @inject UserAuthState UserAuth
-@inject UserInfoService UserInfoService
+@inject IUserInfoService UserInfoService
+@inject IBudgetService BudgetService
 @inject NavigationManager NavManager
+
 
 
 @if (userInfo == null){
@@ -15,7 +19,8 @@ else {
     // page loads after db call
     <h1>Hello, @userInfo.FirstName @userInfo.LastName!</h1>
     <p>Welcome to your new app.</p>
-    <p>Current session managed for User ID: @UserAuth.CurrentUserId</p>
+    
+    <BudgetListCard SelectedBudget=@currentBudget updateCurrentBudget="HandleCurrentUpdate" />
 
     <button @onclick="LogoutButton">Logout</button>
 }
@@ -28,6 +33,9 @@ else {
 @code {
     
     private UserResult? userInfo;
+    private Guid userGuid;
+    private Budget? currentBudget;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -36,9 +44,14 @@ else {
             NavManager.NavigateTo("/login");
             return;
         }
-        userInfo = await UserInfoService.GetUserById(UserAuth.CurrentUserGuid);
+        userGuid = UserAuth.CurrentUserGuid;
+        userInfo = await UserInfoService.GetUserById(userGuid);
+        currentBudget = await BudgetService.GetCurrentBudgetById(userGuid);
     }
     
+    private async Task HandleCurrentUpdate() {
+        await BudgetService.SetCurrentBudget(currentBudget.UserProfileId, currentBudget.Id);
+    }
 
     private async Task LogoutButton() {
         await UserAuth.Logout();

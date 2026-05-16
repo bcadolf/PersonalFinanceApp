@@ -1,0 +1,37 @@
+@using PersonalFinanceApp.Data.Models
+
+<div class="budget-card">
+    @if(SelectedBudget == null) {
+        <p>No Selected Budget Found</p>
+    }
+    else {
+        <h3>Current Budget: @SelectedBudget.BudgetName</h3>
+        <p>
+            <SetCurrentButton isCurrent=@SelectedBudget.IsCurrent SetCurrentChange="handleCurrentChange"/>
+        </p>
+
+        <h4>Budget Item:</h4>
+        <ul>
+            @foreach (BudgetItem item in SelectedBudget.BudgetItems) {
+                <li>@item.ItemName --- $@item.Amount || @item.FinanceCategory</li>
+            }
+        </ul>
+
+    }
+
+</div>
+
+
+
+@code {
+    
+    [Parameter]
+    public Budget? SelectedBudget { get; set; }
+    [Parameter]
+    public EventCallback updateCurrentBudget { get; set; }
+
+    public void handleCurrentChange() {
+        updateCurrentBudget.InvokeAsync();
+    }
+
+}

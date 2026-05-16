@@ -18,6 +18,7 @@ public class BudgetItem : BaseModel
     public Guid FinanceCategoryId { get; set; }
     
     public Guid UserProfileId { get; set; }
+    public Guid BudgetId { get; set; }
 
     public FinanceCategory? FinanceCategory { get; set; }
 

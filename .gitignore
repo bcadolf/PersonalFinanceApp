@@ -77,6 +77,8 @@ Thumbs.db
 # Dotnet tools
 .dotnet-tools/
 Directory.Build.targets
+*.lscache
+
 
 # MAUI generated resources
 Resources/Raw/*.zip
